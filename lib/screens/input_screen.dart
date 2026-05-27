@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../state/journal.dart';
+import '../models/mood_record.dart';
+import 'history_screen.dart';
 
 class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
@@ -10,6 +13,24 @@ class InputScreen extends StatefulWidget {
 class _InputScreenState extends State<InputScreen> {
   String chosenEmoji = '😐';
   final TextEditingController textController = TextEditingController();
+
+    void saveRecord() {
+    String text = textController.text.trim();
+    if (text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Пожалуйста, введи текст!')),
+      );
+      return;
+    }
+    
+    journal.add(MoodRecord(chosenEmoji, text));
+    textController.clear();
+    setState(() {});
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('✅ Запись сохранена!'), duration: Duration(seconds: 1)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
